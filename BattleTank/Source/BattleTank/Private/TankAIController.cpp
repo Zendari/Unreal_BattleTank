@@ -20,6 +20,20 @@ void ATankAIController::BeginPlay()
 	
 }
 
+void ATankAIController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	auto PlayerLocation = GetPlayerTank()->GetActorLocation();
+	if (PlayerLocation) {
+		//TODO Move towards the player
+
+		//Aim at the player
+		GetAIControlledTank()->AimAt(PlayerLocation);
+
+		//Fire if ready
+	}
+}
+
 ATank* ATankAIController::GetAIControlledTank() const
 {
 	///Return the tanks controlled by AI
