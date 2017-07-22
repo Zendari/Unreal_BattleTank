@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAIController.h"
+#include "TankAimingComponent.h"
 #include "BattleTank.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
@@ -24,12 +25,12 @@ void ATankAIController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	auto PlayerLocation = GetPlayerTank()->GetActorLocation();
-	if (PlayerLocation) {
+	if (GetPlayerTank()) {
 		//TODO Move towards the player
 
 		//Aim at the player
 		GetAIControlledTank()->AimAt(PlayerLocation);
-
+		
 		//Fire if ready
 	}
 }
