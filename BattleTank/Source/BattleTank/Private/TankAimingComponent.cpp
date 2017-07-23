@@ -4,6 +4,7 @@
 #include "TankAimingComponent.h"
 #include "TankBarrel.h"
 #include "Tank.h"
+#include "TankTurret.h"
 #include "BattleTank.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
@@ -14,7 +15,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = true; //TODO does it need to Tick
 
 	// ...
 }
@@ -24,6 +25,10 @@ void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 	Barrel = BarrelToSet;
 }
 
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
+{
+	Turret = TurretToSet;
+}
 void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 {
 	if (!Barrel) { return; }
@@ -39,17 +44,25 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		StartLocation,
 		HitLocation,
 		LaunchSpeed,
+		false,
+		0,
+		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
+	
 	if(bHaveAimSolution)
 	{
-		auto AimDirection = OutLaunchVelocity.GetSafeNormal(); //Getting the normal first, actual aim direction
+		 //Getting the normal first, actual aim direction
+		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		auto TankName = GetOwner()->GetName(); //Used for logging
-		UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s "),*TankName, *AimDirection.ToString());
-		//TODO MoveBarrel();
+		MoveBarrelToward(AimDirection);
+		MoveTurretToward(AimDirection);
 	}
 	//If not solution, getting out of here
-	return;
+	else {
+		UE_LOG(LogTemp, Error, TEXT("No Aim solution found"));
+	}
+	
 }
 
 void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
@@ -58,6 +71,27 @@ void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
 	auto DeltaRotator =  AimAsRotator - BarrelRotator;
-	Barrel->Elevate(5);
-	//TODO Not use magic number
+	Barrel->Elevate(DeltaRotator.Pitch);//Elevating the barrel
+	
 }
+
+void UTankAimingComponent::MoveTurretToward(FVector AimDirection)
+{
+	auto TurretRotator = Turret->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotation = AimAsRotator - TurretRotator;
+	if (FMath::Abs(DeltaRotation.Yaw) < 180)
+	{
+		Turret->SetTurretRotation(DeltaRotation.Yaw); 
+	}
+	else
+	{
+		Turret->SetTurretRotation(-DeltaRotation.Yaw);
+	}
+}
+
+/*Logging Section*/
+/*if(bHaveAimSolution){
+	auto time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%f: Solution found"), time);
+}*/
