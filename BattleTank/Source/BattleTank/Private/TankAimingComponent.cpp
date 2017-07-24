@@ -17,7 +17,7 @@ UTankAimingComponent::UTankAimingComponent()
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true; //TODO does it need to Tick
 
-	// ...
+											  // ...
 }
 
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
@@ -49,10 +49,10 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace
 	);
-	
-	if(bHaveAimSolution)
+
+	if (bHaveAimSolution)
 	{
-		 //Getting the normal first, actual aim direction
+		//Getting the normal first, actual aim direction
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		auto TankName = GetOwner()->GetName(); //Used for logging
 		MoveBarrelToward(AimDirection);
@@ -62,7 +62,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	else {
 		UE_LOG(LogTemp, Error, TEXT("No Aim solution found"));
 	}
-	
+
 }
 
 void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
@@ -70,9 +70,9 @@ void UTankAimingComponent::MoveBarrelToward(FVector AimDirection)
 	//Make the difference between current barrel rotation and AimDirection
 	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
 	auto AimAsRotator = AimDirection.Rotation();
-	auto DeltaRotator =  AimAsRotator - BarrelRotator;
+	auto DeltaRotator = AimAsRotator - BarrelRotator;
 	Barrel->Elevate(DeltaRotator.Pitch);//Elevating the barrel
-	
+
 }
 
 void UTankAimingComponent::MoveTurretToward(FVector AimDirection)
@@ -82,7 +82,7 @@ void UTankAimingComponent::MoveTurretToward(FVector AimDirection)
 	auto DeltaRotation = AimAsRotator - TurretRotator;
 	if (FMath::Abs(DeltaRotation.Yaw) < 180)
 	{
-		Turret->SetTurretRotation(DeltaRotation.Yaw); 
+		Turret->SetTurretRotation(DeltaRotation.Yaw);
 	}
 	else
 	{
@@ -92,6 +92,6 @@ void UTankAimingComponent::MoveTurretToward(FVector AimDirection)
 
 /*Logging Section*/
 /*if(bHaveAimSolution){
-	auto time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f: Solution found"), time);
+auto time = GetWorld()->GetTimeSeconds();
+UE_LOG(LogTemp, Warning, TEXT("%f: Solution found"), time);
 }*/

@@ -37,7 +37,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if (GetSightRayHitLocation(HitLocation)) //Is going to line-trace
 	{
 		GetControlledTank()->AimAt(HitLocation);
-			//TODO Tell the controlledTank to aim at this point
+		//TODO Tell the controlledTank to aim at this point
 	}
 }
 
@@ -47,19 +47,19 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	//Find the crosshair position
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
-	auto ScreenLocation=FVector2D(ViewportSizeX*CrosshairXLocation,ViewportSizeY*CrosshairYLocation); //<- Actual crosshair position
-	
-	//De-project the screen position of the crosshair to a world direction
+	auto ScreenLocation = FVector2D(ViewportSizeX*CrosshairXLocation, ViewportSizeY*CrosshairYLocation); //<- Actual crosshair position
+
+																										 //De-project the screen position of the crosshair to a world direction
 	FVector LookDirection;
-	if(GetLookDirection(ScreenLocation,LookDirection))
+	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
 		//Line trace along that look direction and see what we hit (up to max range, LineTraceRange)
-		GetLookVectorHitLocation(LookDirection,OutHitLocation);
+		GetLookVectorHitLocation(LookDirection, OutHitLocation);
 	}
 	return true;
 }
 
-bool ATankPlayerController::GetLookDirection (FVector2D ScreenLocation,FVector& LookDirection) const
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
 {
 	FVector CameraWorldLocation;//Is discarded
 	return DeprojectScreenPositionToWorld( //Return where is the player looking at on a XYZ axis of unit 1
@@ -69,20 +69,20 @@ bool ATankPlayerController::GetLookDirection (FVector2D ScreenLocation,FVector& 
 		LookDirection);
 }
 
-bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection,FVector& OutHitLocation) const {
-	
+bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& OutHitLocation) const {
+
 	FHitResult HitResult;
 	auto StartLocation = PlayerCameraManager->GetCameraLocation();
-	auto EndLocation =StartLocation+(LookDirection*LineTraceRange);
+	auto EndLocation = StartLocation + (LookDirection*LineTraceRange);
 	if (GetWorld()->LineTraceSingleByChannel( //Then we line trace on the XYZ Axis with a range of LineTraceRange
 		HitResult,
 		StartLocation,
 		EndLocation,
-		ECollisionChannel::ECC_Visibility)) 
+		ECollisionChannel::ECC_Visibility))
 	{
 		OutHitLocation = HitResult.Location; //Getting the location of the LineTrace
 		return true;
 	}
-	OutHitLocation = FVector(0); 
+	OutHitLocation = FVector(0);
 	return false;
 }

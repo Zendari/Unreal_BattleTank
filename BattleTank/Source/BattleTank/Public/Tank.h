@@ -22,17 +22,20 @@ private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(EditAnywhere,Category=Firing)
-	float LaunchSpeed=100000; //TODO Find a sensible default
+	UPROPERTY(EditAnywhere, Category = Firing)
+		float LaunchSpeed = 100000; //TODO Find a sensible default
 
 public:
 	void AimAt(FVector HitLocation);
 
-	UFUNCTION(BlueprintCallable,Category=Setup)
+	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)
-	void SetTurretReference(UTankTurret* TurretToSet); 
+	void SetTurretReference(UTankTurret* TurretToSet);
+
+	UFUNCTION(BlueprintCallable, Category = Fire)
+	void Fire();
 
 protected:
 	// Called when the game starts or when spawned

@@ -9,7 +9,7 @@
 // Sets default values
 ATank::ATank()
 {
- 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	//No need to protect pointer here
@@ -20,7 +20,7 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called to bind functionality to input
@@ -40,8 +40,13 @@ void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
 }
 
-void ATank::SetTurretReference(UTankTurret* TurretToSet) 
+void ATank::SetTurretReference(UTankTurret* TurretToSet)
 {
 	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
+void ATank::Fire()
+{
+	auto time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%f: Tank fires"), time);
+}
