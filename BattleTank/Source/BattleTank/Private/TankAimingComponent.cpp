@@ -59,9 +59,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 		MoveTurretToward(AimDirection);
 	}
 	//If not solution, getting out of here
-	else {
-		UE_LOG(LogTemp, Error, TEXT("No Aim solution found"));
-	}
+	
 
 }
 
@@ -94,4 +92,7 @@ void UTankAimingComponent::MoveTurretToward(FVector AimDirection)
 /*if(bHaveAimSolution){
 auto time = GetWorld()->GetTimeSeconds();
 UE_LOG(LogTemp, Warning, TEXT("%f: Solution found"), time);
+}
+else {
+UE_LOG(LogTemp, Error, TEXT("No Aim solution found"));
 }*/
