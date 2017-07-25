@@ -32,6 +32,10 @@ private:
 	//Local barrel reference to spawn projectile
 	UTankBarrel* Barrel = nullptr;
 
+	float ReloadTime = 3; //in seconds
+
+	double LastFireTime=0;
+
 public:
 	void AimAt(FVector HitLocation);
 
@@ -49,4 +53,5 @@ protected:
 	virtual void BeginPlay() override;
 
 	UTankAimingComponent* TankAimingComponent = nullptr;
+
 };
