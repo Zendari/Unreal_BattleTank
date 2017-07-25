@@ -10,6 +10,7 @@
 class UTankBarrel;
 class UTankAimingComponent;
 class UTankTurret;
+class AProjectile;
 UCLASS()
 class BATTLETANK_API ATank : public APawn
 {
@@ -23,7 +24,13 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 100000; //TODO Find a sensible default
+	float LaunchSpeed = 4000;
+
+	UPROPERTY(EditAnywhere, Category = Setup) // Alt https://docs.unrealengine.com/latest/INT/Programming/UnrealArchitecture/TSubclassOf
+	TSubclassOf<AProjectile> ProjectileBlueprint; // So that the tank know about the projectile
+
+	//Local barrel reference to spawn projectile
+	UTankBarrel* Barrel = nullptr;
 
 public:
 	void AimAt(FVector HitLocation);
