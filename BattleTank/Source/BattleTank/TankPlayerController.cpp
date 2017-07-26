@@ -10,13 +10,6 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	auto ControlledTank = GetControlledTank();
-	if (!ControlledTank) {
-		UE_LOG(LogTemp, Error, TEXT("Player Controller not found"));
-	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("PlayerControlled Tank: %s"), *ControlledTank->GetName());
-	}
 }
 
 void ATankPlayerController::Tick(float DeltaSeconds)
