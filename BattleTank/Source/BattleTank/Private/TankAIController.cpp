@@ -20,11 +20,10 @@ void ATankAIController::Tick(float DeltaSeconds)
 	auto AITank = Cast<ATank>(GetPawn());
 
 	if (PlayerPawn) {
-		//TODO Move towards the player
-
+		// Move towards the player
+		MoveToActor(PlayerPawn, AcceptanceRadius);
 		//Aim at the player
 		AITank->AimAt(PlayerPawn->GetActorLocation());
-
 		//Fire every single frame //TODO maybe fix this 
 		AITank->Fire();
 	}
