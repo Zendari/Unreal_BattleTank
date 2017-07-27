@@ -3,10 +3,11 @@
 
 #include "TankAIController.h"
 #include "Tank.h"
-#include "TankAimingComponent.h"
 #include "BattleTank.h"
 #include "GameFramework/Actor.h"
 #include "Engine/World.h"
+
+//Depends on movement component via path-finding system
 
 void ATankAIController::BeginPlay()
 {
@@ -19,7 +20,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 	auto PlayerPawn = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	auto AITank = Cast<ATank>(GetPawn());
 
-	if (PlayerPawn) {
+	if (ensure(PlayerPawn)) {
 		// Move towards the player
 		MoveToActor(PlayerPawn, AcceptanceRadius);
 		//Aim at the player

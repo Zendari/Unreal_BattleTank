@@ -3,8 +3,6 @@
 #include "Tank.h"
 #include "TankBarrel.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h"
-#include "TankTurret.h"
 #include "Projectile.h"
 #include "BattleTank.h"
 #include "Engine/World.h"
@@ -26,21 +24,24 @@ void ATank::BeginPlay()
 
 void ATank::SetReferences(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
+	if (!ensure(TankAimingComponent)) { return; }
 	TankAimingComponent->Initialise(BarrelToSet, TurretToSet); //TODO see if need comment
-
+	Barrel = BarrelToSet;
 }
 
 void ATank::AimAt(FVector HitLocation)
 {
-	if (!TankAimingComponent) { return; }
+	if (!ensure(TankAimingComponent)) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
 }
 
 
 void ATank::Fire()
 {
+	if (!ensure(Barrel)) { return; }
+
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (TankAimingComponent->Barrel && isReloaded)
+	if (isReloaded)
 	{
 		///Spawn a projectile at the socket location
 		auto SpawnLocation = TankAimingComponent->Barrel->GetSocketLocation(FName("Projectile"));
