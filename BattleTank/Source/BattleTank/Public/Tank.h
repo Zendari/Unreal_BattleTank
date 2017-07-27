@@ -20,6 +20,7 @@ private:
 	// Sets default values for this pawn's properties
 	ATank();
 
+	//TODO remove once the fire method has moved to aiming comp.
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 4000;
 
