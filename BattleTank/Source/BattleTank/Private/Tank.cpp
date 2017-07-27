@@ -13,52 +13,38 @@
 ATank::ATank()
 {
 	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = false;
-
-	//No need to protect pointer here
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("AimingComponent"));
-	
+	PrimaryActorTick.bCanEverTick = false;	
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY:Tank Constructor Log"));
 }
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY: Tank BeginPlay Log"));
 }
 
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ATank::SetReferences(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	TankAimingComponent->Initialise(BarrelToSet, TurretToSet); //TODO see if need comment
 
 }
 
 void ATank::AimAt(FVector HitLocation)
 {
+	if (!TankAimingComponent) { return; }
 	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-}
-
-void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
-{
-	TankAimingComponent->SetBarrelReference(BarrelToSet);
-	Barrel = BarrelToSet;
-}
-
-void ATank::SetTurretReference(UTankTurret* TurretToSet)
-{
-	TankAimingComponent->SetTurretReference(TurretToSet);
 }
 
 
 void ATank::Fire()
 {
 	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (Barrel && isReloaded)
+	if (TankAimingComponent->Barrel && isReloaded)
 	{
 		///Spawn a projectile at the socket location
-		auto SpawnLocation = Barrel->GetSocketLocation(FName("Projectile"));
-		auto SpawnRotation = Barrel->GetSocketRotation(FName("Projectile"));
+		auto SpawnLocation = TankAimingComponent->Barrel->GetSocketLocation(FName("Projectile"));
+		auto SpawnRotation = TankAimingComponent->Barrel->GetSocketRotation(FName("Projectile"));
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(ProjectileBlueprint, FVector(SpawnLocation), FRotator(SpawnRotation));
 
 		///Launch projectile

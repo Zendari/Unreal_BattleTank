@@ -2,7 +2,6 @@
 
 #pragma once
 
-
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "TankAimingComponent.generated.h"
@@ -26,9 +25,6 @@ class BATTLETANK_API UTankAimingComponent : public UActorComponent
 	GENERATED_BODY()
 
 private:
-	UTankBarrel* Barrel = nullptr;
-
-	UTankTurret* Turret = nullptr;
 
 	void MoveBarrelToward(FVector AimDirection);
 
@@ -43,9 +39,12 @@ public:
 	// Sets default values for this component's properties
 	UTankAimingComponent();
 
+	UTankBarrel* Barrel = nullptr;
+
+	UTankTurret* Turret = nullptr;
+
 	void AimAt(FVector HitLocation, float LaunchSpeed);
 
-	void SetBarrelReference(UTankBarrel* BarrelToSet);
-
-	void SetTurretReference(UTankTurret* TurretToSet);
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 };
