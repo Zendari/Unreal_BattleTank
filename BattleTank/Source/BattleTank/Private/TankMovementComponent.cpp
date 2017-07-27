@@ -8,7 +8,7 @@ void UTankMovementComponent::Initialise(UTankTrack* LeftTrackToSet, UTankTrack* 
 {
 	LeftTrack= LeftTrackToSet;
 	RightTrack = RightTrackToSet;
-	//TODO prevent double speed due to control 
+
 }
 
 
@@ -35,7 +35,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	auto ForwardThrow=FVector::DotProduct(TankForward, AIForwardIntention);
 	IntendMoveForward(ForwardThrow);
 
-	auto RightThrow = FVector::CrossProduct( AIForwardIntention,TankForward).Z;
+	auto RightThrow = FVector::CrossProduct(TankForward,AIForwardIntention).Z;
 	IntendTurnRight(RightThrow);
 	//UE_LOG(LogTemp, Warning, TEXT("%s vectoring at %s"), *TankName, *VelocityString);
 }
