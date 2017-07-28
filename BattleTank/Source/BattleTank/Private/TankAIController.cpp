@@ -27,7 +27,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 		//Aim at the player
 		AimingComponent->AimAt(PlayerPawn->GetActorLocation());
 		//Fire 
-		//AITank->Fire();  //TODO move the function as well
+		AimingComponent->Fire();  //TODO move the function as well
 	}
 }
 

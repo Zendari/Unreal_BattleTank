@@ -34,7 +34,6 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if (GetSightRayHitLocation(HitLocation)) //Is going to line-trace
 	{
 		AimingComponent->AimAt(HitLocation);
-		//TODO Tell the controlledTank to aim at this point
 	}
 }
 
