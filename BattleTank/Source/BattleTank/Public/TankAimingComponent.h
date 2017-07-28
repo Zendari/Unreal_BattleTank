@@ -31,6 +31,10 @@ private:
 
 	void MoveTurretToward(FVector AimDirection);
 
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 4000;
 
@@ -44,7 +48,7 @@ private:
 protected:
 
 	UPROPERTY(BlueprintReadOnly,Category="FiringState")
-	EFiringState FiringState = EFiringState::Aiming;
+	EFiringState FiringState = EFiringState::Reloading;
 
 public:
 	// Sets default values for this component's properties

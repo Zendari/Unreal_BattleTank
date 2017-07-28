@@ -18,6 +18,22 @@ UTankAimingComponent::UTankAimingComponent()
 	PrimaryComponentTick.bCanEverTick = true; 
 }
 
+void UTankAimingComponent::BeginPlay()
+{
+	//So that first fire is after first reload
+	LastFireTime = FPlatformTime::Seconds();
+	if ((FPlatformTime::Seconds() - LastFireTime) > ReloadTime)
+	{
+		FiringState = EFiringState::Reloading;
+	}
+	//TODO Handle aiming and locked state
+}
+
+void UTankAimingComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("Aim Comp tick"));
+}
+
 void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet)
 {
 	Barrel = BarrelToSet;
@@ -85,11 +101,11 @@ void UTankAimingComponent::MoveTurretToward(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel && ProjectileBlueprint)) { return; }
 
-	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
-	if (isReloaded)
+	if (FiringState != EFiringState::Reloading)
 	{
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
 		///Spawn a projectile at the socket location
 		auto SpawnLocation = this->Barrel->GetSocketLocation(FName("Projectile"));
 		auto SpawnRotation = this->Barrel->GetSocketRotation(FName("Projectile"));
