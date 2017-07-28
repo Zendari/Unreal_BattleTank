@@ -35,6 +35,8 @@ private:
 
 	virtual void BeginPlay() override;
 
+	bool IsBarrelMoving();
+
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 	float LaunchSpeed = 4000;
 
@@ -45,10 +47,12 @@ private:
 
 	double LastFireTime = 0;
 
+	FVector AimDirection;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly,Category="FiringState")
-	EFiringState FiringState = EFiringState::Reloading;
+	EFiringState FiringState = EFiringState::Reloading;;
 
 public:
 	// Sets default values for this component's properties
