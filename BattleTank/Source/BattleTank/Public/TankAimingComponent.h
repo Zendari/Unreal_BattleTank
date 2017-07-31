@@ -11,7 +11,8 @@ enum class EFiringState : uint8
 {
 	Reloading,
 	Aiming,
-	Locked
+	Locked,
+	OutOfAmmo
 };
 
 
@@ -43,16 +44,18 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	TSubclassOf<AProjectile> ProjectileBlueprint; // So that the tank know about the projectile
 
+	FVector AimDirection;
+
 	float ReloadTime = 3; //in seconds
 
 	double LastFireTime = 0;
 
-	FVector AimDirection;
+	int RoundsLeft = 3;
 
 protected:
 
 	UPROPERTY(BlueprintReadOnly,Category="FiringState")
-	EFiringState FiringState = EFiringState::Reloading;;
+	EFiringState FiringState = EFiringState::Reloading;
 
 public:
 	// Sets default values for this component's properties
@@ -71,4 +74,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
+	
+	UFUNCTION(BlueprintCallable, Category = "Fire")
+	int GetRoundsLeft() const;
+
+	
 };
