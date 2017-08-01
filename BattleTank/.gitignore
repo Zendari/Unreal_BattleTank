@@ -74,8 +74,5 @@ Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-#Ignoring StarterContent folder
-Content/StarterContent/*
-
 #Ignoring standalone builds
 WindowsNoEditor/*
