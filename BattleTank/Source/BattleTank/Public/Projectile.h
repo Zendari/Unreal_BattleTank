@@ -7,7 +7,7 @@
 #include "Projectile.generated.h"
 
 class UProjectileMovementComponent;
-
+class UParticleSystemComponent;
 UCLASS()
 class BATTLETANK_API AProjectile : public AActor
 {
@@ -15,6 +15,12 @@ class BATTLETANK_API AProjectile : public AActor
 	
 private:	
 	UProjectileMovementComponent* MovementComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere,Category="Components") //TODO change to EditDefaultsOnly maybe
+	UStaticMeshComponent* CollisionMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UParticleSystemComponent* LaunchBlast = nullptr;
 
 protected:
 	// Called when the game starts or when spawned

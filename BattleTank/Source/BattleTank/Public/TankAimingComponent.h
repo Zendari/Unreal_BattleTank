@@ -49,8 +49,9 @@ private:
 	float ReloadTime = 3; //in seconds
 
 	double LastFireTime = 0;
-
-	int RoundsLeft = 3;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+	int32 RoundsLeft = 3;
 
 protected:
 
@@ -76,7 +77,7 @@ public:
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 	
 	UFUNCTION(BlueprintCallable, Category = "Fire")
-	int GetRoundsLeft() const;
+	int32 GetRoundsLeft() const;
 
 	
 };
