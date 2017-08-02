@@ -19,6 +19,13 @@ void UTankTrack::SetThrottle(float Throttle)
 	CurrentThrottle = FMath::Clamp<float>(CurrentThrottle + Throttle, -1, 1);
 }
 
+void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult &HitResult)
+{
+	DriveTracks();
+	ApplySidewaysForce();
+	CurrentThrottle = 0;
+}
+
 void UTankTrack::DriveTracks()
 {
 	//TODO clamp throttle value, so player cant change it
@@ -26,13 +33,6 @@ void UTankTrack::DriveTracks()
 	auto ForceLocation = GetComponentLocation();
 	auto TankRoot = Cast<UPrimitiveComponent>(GetOwner()->GetRootComponent());
 	TankRoot->AddForceAtLocation(AppliedForce, ForceLocation);
-}
-
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult &HitResult)
-{
-	DriveTracks();
-	ApplySidewaysForce();
-	CurrentThrottle = 0;
 }
 
 void UTankTrack::ApplySidewaysForce()
