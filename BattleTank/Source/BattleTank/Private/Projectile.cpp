@@ -4,6 +4,7 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
 #include "Engine/EngineTypes.h"
 
@@ -58,6 +59,15 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 
 	SetRootComponent(ImpactBlast);
 	CollisionMesh->DestroyComponent();
+
+	UGameplayStatics::ApplyRadialDamage(
+		this,
+		ProjectileDamage,
+		GetActorLocation(),
+		ExplosionForce->Radius, //for consistancy
+		UDamageType::StaticClass(),
+		TArray<AActor*>() //Damage all actors, TODO damage one actor only
+	);
 
 	FTimerHandle TimeDelay;
 	GetWorld()->GetTimerManager().SetTimer(TimeDelay,this,&AProjectile::DestroyProjectile,DestroyDelay,false);
