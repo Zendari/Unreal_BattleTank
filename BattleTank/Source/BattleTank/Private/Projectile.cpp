@@ -5,6 +5,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "PhysicsEngine/RadialForceComponent.h"
 #include "Engine/World.h"
+#include "Engine/EngineTypes.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -44,9 +45,22 @@ void AProjectile::LauchProjectile(float Speed)
     MovementComponent->Activate();
 }
 
+void AProjectile::DestroyProjectile()
+{
+	Destroy();
+}
+
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult &HitResult)
 {
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
 	ExplosionForce->FireImpulse();
+
+	SetRootComponent(ImpactBlast);
+	CollisionMesh->DestroyComponent();
+
+	FTimerHandle TimeDelay;
+	GetWorld()->GetTimerManager().SetTimer(TimeDelay,this,&AProjectile::DestroyProjectile,DestroyDelay,false);
 }
+
+
