@@ -40,6 +40,11 @@ protected:
 
 public:
 
+	UFUNCTION()
+	void OnTankDeath();
+
+	virtual void SetPawn(APawn* InPawn) override;
+
 	UPROPERTY(EditDefaultsOnly)
 		float CrosshairXLocation = 0.5; //Because it is 50% right from the top-left corner
 

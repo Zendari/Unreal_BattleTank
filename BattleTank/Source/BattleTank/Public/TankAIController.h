@@ -17,7 +17,12 @@ protected:
 
 public:
 
+	UFUNCTION()
+	void OnTankDeath();
+
 	virtual void BeginPlay() override;
+
+	virtual void SetPawn(APawn* InPawn);
 
 	virtual void Tick(float DeltaSeconds) override;
 
