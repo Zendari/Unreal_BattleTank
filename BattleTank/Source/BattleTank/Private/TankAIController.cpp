@@ -30,7 +30,7 @@ void ATankAIController::Tick(float DeltaSeconds)
 		//Fire 
 		if(AimingComponent->GetFiringState() == EFiringState::Locked)
 		{
-			AimingComponent->Fire();  //TODO limit firing state
+			AimingComponent->Fire(); 
 		}
 		
 	}
@@ -49,7 +49,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 	}
 }
 
-
+ 
 void ATankAIController::OnTankDeath()
 {
 	auto PosessedTank = GetPawn();
